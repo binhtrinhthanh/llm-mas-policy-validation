@@ -1,0 +1,17 @@
+case,configuration,suite,runs,failures
+stale_oversized_order,frozen,original,690,0
+stale_oversized_order,frozen,post_freeze,120,0
+stale_oversized_order,market_only,original,690,0
+stale_oversized_order,market_only,post_freeze,120,0
+stale_oversized_order,risk_only,original,690,0
+stale_oversized_order,risk_only,post_freeze,120,0
+stale_oversized_order,joint,original,690,0
+stale_oversized_order,joint,post_freeze,120,0
+stale_overcommitted_order,frozen,original,690,0
+stale_overcommitted_order,frozen,post_freeze,120,0
+stale_overcommitted_order,market_only,original,690,0
+stale_overcommitted_order,market_only,post_freeze,120,0
+stale_overcommitted_order,risk_only,original,690,0
+stale_overcommitted_order,risk_only,post_freeze,120,0
+stale_overcommitted_order,joint,original,690,0
+stale_overcommitted_order,joint,post_freeze,120,0

@@ -1,0 +1,11 @@
+variant,original_failed,original_families,post_freeze_failed,post_freeze_families,observer_failed,checkpoint_failed,checkpoint_only,runtime_diagnostic_runs
+frozen_pipeline,0,,0,,0,0,0,0
+reject_age_five,30,fresh_boundary,30,freshness_and_quantity_boundaries,0,30,30,0
+accept_age_six,30,stale_boundary,30,freshness_and_quantity_boundaries,30,30,0,0
+ignore_reservations,90,joint_recovery|pending_after_partial|pending_cash,30,pending_exact_cash,30,30,0,0
+reject_exact_budget,30,budget_equal,30,pending_exact_cash,0,30,30,0
+drop_timeout_retry,90,joint_recovery|repeated_loss|retry_lost,30,retry_with_second_order,0,30,30,0
+change_retry_identifier,150,duplicate_timeouts|partial_timeout|retry_ack|split_interleaving|two_orders,30,retry_with_second_order,30,30,0,0
+ignore_late_fills,120,cancel_timeout|joint_recovery|late|late_duplicate,30,late_fill_with_delayed_duplicate,30,30,0,0
+reapply_duplicate_fill,540,budget_equal|cancel_timeout|duplicate|duplicate_timeouts|fresh_boundary|joint_recovery|late|late_duplicate|normal|partial|partial_timeout|pending_after_partial|pending_cash|repeated_loss|retry_ack|retry_lost|split_interleaving|two_orders,60,late_fill_with_delayed_duplicate|pending_exact_cash,60,60,0,0
+apply_order_quantity,210,joint_recovery|late|late_duplicate|partial|partial_timeout|pending_after_partial|split_interleaving,60,late_fill_with_delayed_duplicate|pending_exact_cash,60,60,0,0

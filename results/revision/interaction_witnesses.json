@@ -1,0 +1,957 @@
+{
+  "stale_oversized_order/frozen": {
+    "case": "stale_oversized_order",
+    "configuration": "frozen",
+    "seed": 0,
+    "orders": "",
+    "violations": "",
+    "diagnostics": [],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": []
+      }
+    ]
+  },
+  "stale_oversized_order/market_only": {
+    "case": "stale_oversized_order",
+    "configuration": "market_only",
+    "seed": 0,
+    "orders": "",
+    "violations": "",
+    "diagnostics": [],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 1,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 2,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6
+        }
+      },
+      {
+        "step": 3,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o1"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 0
+        },
+        "order": {
+          "price": 58,
+          "qty": 11
+        },
+        "commands": []
+      }
+    ]
+  },
+  "stale_oversized_order/risk_only": {
+    "case": "stale_oversized_order",
+    "configuration": "risk_only",
+    "seed": 0,
+    "orders": "",
+    "violations": "",
+    "diagnostics": [],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": []
+      }
+    ]
+  },
+  "stale_oversized_order/joint": {
+    "case": "stale_oversized_order",
+    "configuration": "joint",
+    "seed": 0,
+    "orders": "o1",
+    "violations": "fresh_market_data|expected_exchange_orders",
+    "diagnostics": [
+      {
+        "component": "observer",
+        "check": "fresh_market_data",
+        "step": 4
+      }
+    ],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 1,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 2,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 58,
+          "qty": 11,
+          "age": 6
+        }
+      },
+      {
+        "step": 3,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 4,
+        "agent": "execution",
+        "kind": "submit",
+        "data": {
+          "oid": "o1"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 58,
+          "qty": 11,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 0
+        },
+        "order": {
+          "price": 58,
+          "qty": 11
+        },
+        "commands": [
+          {
+            "type": "approve"
+          }
+        ]
+      },
+      {
+        "policy": "retry",
+        "event": {
+          "kind": "submit"
+        },
+        "order": {
+          "price": 58,
+          "qty": 11,
+          "status": "approved",
+          "order_id": "o1",
+          "approved": true
+        },
+        "commands": [
+          {
+            "type": "submit",
+            "client_order_id": "o1",
+            "price": 58,
+            "qty": 11
+          }
+        ]
+      }
+    ]
+  },
+  "stale_overcommitted_order/frozen": {
+    "case": "stale_overcommitted_order",
+    "configuration": "frozen",
+    "seed": 0,
+    "orders": "o1",
+    "violations": "",
+    "diagnostics": [],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 1,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 2,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0
+        }
+      },
+      {
+        "step": 3,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 4,
+        "agent": "execution",
+        "kind": "submit",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 5,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 0
+        },
+        "order": {
+          "price": 97,
+          "qty": 10
+        },
+        "commands": [
+          {
+            "type": "approve"
+          }
+        ]
+      },
+      {
+        "policy": "retry",
+        "event": {
+          "kind": "submit"
+        },
+        "order": {
+          "price": 97,
+          "qty": 10,
+          "status": "approved",
+          "order_id": "o1",
+          "approved": true
+        },
+        "commands": [
+          {
+            "type": "submit",
+            "client_order_id": "o1",
+            "price": 97,
+            "qty": 10
+          }
+        ]
+      },
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": []
+      }
+    ]
+  },
+  "stale_overcommitted_order/market_only": {
+    "case": "stale_overcommitted_order",
+    "configuration": "market_only",
+    "seed": 0,
+    "orders": "o1",
+    "violations": "",
+    "diagnostics": [],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 1,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 2,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0
+        }
+      },
+      {
+        "step": 3,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 4,
+        "agent": "execution",
+        "kind": "submit",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 5,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 6,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 7,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6
+        }
+      },
+      {
+        "step": 8,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o2"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 0
+        },
+        "order": {
+          "price": 97,
+          "qty": 10
+        },
+        "commands": [
+          {
+            "type": "approve"
+          }
+        ]
+      },
+      {
+        "policy": "retry",
+        "event": {
+          "kind": "submit"
+        },
+        "order": {
+          "price": 97,
+          "qty": 10,
+          "status": "approved",
+          "order_id": "o1",
+          "approved": true
+        },
+        "commands": [
+          {
+            "type": "submit",
+            "client_order_id": "o1",
+            "price": 97,
+            "qty": 10
+          }
+        ]
+      },
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 970
+        },
+        "order": {
+          "price": 97,
+          "qty": 10
+        },
+        "commands": []
+      }
+    ]
+  },
+  "stale_overcommitted_order/risk_only": {
+    "case": "stale_overcommitted_order",
+    "configuration": "risk_only",
+    "seed": 0,
+    "orders": "o1",
+    "violations": "",
+    "diagnostics": [],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 1,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 2,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0
+        }
+      },
+      {
+        "step": 3,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 4,
+        "agent": "execution",
+        "kind": "submit",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 5,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 0
+        },
+        "order": {
+          "price": 97,
+          "qty": 10
+        },
+        "commands": [
+          {
+            "type": "approve"
+          }
+        ]
+      },
+      {
+        "policy": "retry",
+        "event": {
+          "kind": "submit"
+        },
+        "order": {
+          "price": 97,
+          "qty": 10,
+          "status": "approved",
+          "order_id": "o1",
+          "approved": true
+        },
+        "commands": [
+          {
+            "type": "submit",
+            "client_order_id": "o1",
+            "price": 97,
+            "qty": 10
+          }
+        ]
+      },
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": []
+      }
+    ]
+  },
+  "stale_overcommitted_order/joint": {
+    "case": "stale_overcommitted_order",
+    "configuration": "joint",
+    "seed": 0,
+    "orders": "o1|o2",
+    "violations": "cash_exposure|fresh_market_data|expected_exchange_orders",
+    "diagnostics": [
+      {
+        "component": "observer",
+        "check": "fresh_market_data",
+        "step": 9
+      },
+      {
+        "component": "observer",
+        "check": "cash_exposure",
+        "step": 9
+      }
+    ],
+    "trace": [
+      {
+        "step": 0,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 1,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 2,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 0
+        }
+      },
+      {
+        "step": 3,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 4,
+        "agent": "execution",
+        "kind": "submit",
+        "data": {
+          "oid": "o1"
+        }
+      },
+      {
+        "step": 5,
+        "agent": "market",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 6,
+        "agent": "analysis",
+        "kind": "quote",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        }
+      },
+      {
+        "step": 7,
+        "agent": "portfolio",
+        "kind": "propose",
+        "data": {
+          "price": 97,
+          "qty": 10,
+          "age": 6
+        }
+      },
+      {
+        "step": 8,
+        "agent": "risk",
+        "kind": "assess",
+        "data": {
+          "oid": "o2"
+        }
+      },
+      {
+        "step": 9,
+        "agent": "execution",
+        "kind": "submit",
+        "data": {
+          "oid": "o2"
+        }
+      }
+    ],
+    "policy_calls": [
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 0,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 0
+        },
+        "order": {
+          "price": 97,
+          "qty": 10
+        },
+        "commands": [
+          {
+            "type": "approve"
+          }
+        ]
+      },
+      {
+        "policy": "retry",
+        "event": {
+          "kind": "submit"
+        },
+        "order": {
+          "price": 97,
+          "qty": 10,
+          "status": "approved",
+          "order_id": "o1",
+          "approved": true
+        },
+        "commands": [
+          {
+            "type": "submit",
+            "client_order_id": "o1",
+            "price": 97,
+            "qty": 10
+          }
+        ]
+      },
+      {
+        "policy": "freshness",
+        "event": {
+          "kind": "quote",
+          "price": 97,
+          "qty": 10,
+          "age": 6,
+          "signal": "buy"
+        },
+        "order": {},
+        "commands": [
+          {
+            "type": "forward"
+          }
+        ]
+      },
+      {
+        "policy": "reservation",
+        "event": {
+          "kind": "assess",
+          "cash": 1000,
+          "reserved": 970
+        },
+        "order": {
+          "price": 97,
+          "qty": 10
+        },
+        "commands": [
+          {
+            "type": "approve"
+          }
+        ]
+      },
+      {
+        "policy": "retry",
+        "event": {
+          "kind": "submit"
+        },
+        "order": {
+          "price": 97,
+          "qty": 10,
+          "status": "approved",
+          "order_id": "o2",
+          "approved": true
+        },
+        "commands": [
+          {
+            "type": "submit",
+            "client_order_id": "o2",
+            "price": 97,
+            "qty": 10
+          }
+        ]
+      }
+    ]
+  }
+}

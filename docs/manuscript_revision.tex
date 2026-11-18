@@ -1,0 +1,120 @@
+% Replacement text for the Introduction and additions to the evaluation.
+% This excerpt reports completed experiments. Insert after matching the
+% manuscript's labels and bibliography.
+
+% Introduction: research gap
+Policy inputs in a message-driven multi-agent system depend on messages
+and shared state produced by other agents. A replacement can satisfy
+its command schema and pass the system-level checks when it is the only
+policy changed. When policies are replaced together, their decisions
+can expose a path that was blocked in each single-update configuration.
+Assessing this risk requires controlling the policy configuration while
+holding the scenario and the system-level requirements fixed.
+
+% Introduction: revised contributions
+This article makes three contributions.
+\begin{itemize}
+  \item An executable scenario-based validation framework for
+    LLM-assisted policy replacements in a message-driven multi-agent
+    system with fixed agent interfaces.
+  \item A paired assessment of individual and joint replacements that
+    evaluates the same system-level requirements under matched inputs
+    and records traces for diagnosing interactions between policies.
+  \item A reproducible stock-trading case study that demonstrates
+    joint-only failures on two constructed cases and measures the
+    contribution of scenario checkpoints beyond runtime observation.
+\end{itemize}
+
+% Replace RQ2 in the Introduction.
+\textbf{RQ2.} Can joint evaluation reveal system-level violations
+when each policy replacement passes the same checks in its
+single-update configuration?
+
+% Add to Section 4.4.
+\paragraph{Paired assessment of interaction faults.}
+We constructed two pairs of schema-valid edits to the Market Data
+and Risk policies in the frozen four-agent configuration. In each
+case, the modified Market Data policy forwards a selected stale quote.
+The corresponding Risk edit either relaxes the quantity limit for a
+selected oversized order or omits pending reservations for a selected
+order. We ran the frozen, Market-only, Risk-only, and joint
+configurations using the same scenarios, seeds, and assertions. Both
+pairs were assessed with 30 seeds per configuration.
+
+\begin{table}[ht]
+\centering
+\caption{Violating executions out of 30 runs per configuration.}
+\label{tab:paired-policy-updates}
+\begin{tabular}{lrrrr}
+\hline
+Scenario & Frozen & Market only & Risk only & Joint \\
+\hline
+Stale oversized order & 0 & 0 & 0 & 30 \\
+Stale order exceeding available exposure & 0 & 0 & 0 & 30 \\
+\hline
+\end{tabular}
+\end{table}
+
+Each configuration also passed all 690 original extended executions
+and all 120 post-freeze executions. The new scenarios exercise
+combinations of inputs outside those suites. In the second case,
+the first order can reserve 970 of the initial 1,000 monetary units.
+The stale second quote is filtered by the frozen Market Data policy
+and would independently be rejected by the frozen Risk policy.
+With both replacements active, the system submits the second order
+and the observer reports exposure of 1,940. This pair of edits
+illustrates how the remaining frozen policy can prevent a system-level
+violation during each individual assessment.
+
+\textbf{Answer to RQ2.}
+Joint evaluation detected violations in both constructed cases.
+For each case, the frozen and single-update configurations satisfied
+the system-level checks on the matched executions.
+
+% Add to Section 4.5.
+\paragraph{Attribution of fault detection.}
+All 1,080 post-freeze mutant executions completed with valid command
+schemas. The execution path reported no immediate runtime diagnostics
+for these variants. An omitted command, such as a missing timeout retry,
+was detected by its downstream effect on the expected exchange orders.
+On the same executions, observer checks alone detected six of nine
+mutants and flagged 240 runs. Adding scenario checkpoints detected all
+nine and flagged 330 runs. The additional 90 runs involved rejection
+of age-five quotes, rejection of exact-budget orders, or omission of
+timeout retries. The original extended and post-freeze suites detected
+the same nine mutants with their full checks. The observer ablation
+quantifies the contribution of checkpoints on the post-freeze inputs.
+
+\begin{table}[ht]
+\centering
+\caption{First check to flag each fault in the post-freeze witness traces.
+For the last two variants, the first check depends on the scenario.}
+\label{tab:post-freeze-first-check}
+\small
+\begin{tabular}{@{}p{.25\linewidth}p{.26\linewidth}p{.42\linewidth}@{}}
+\hline
+Seeded fault & Scenario family & First check \\
+\hline
+Reject age-five quote & Freshness and quantity & Order-ID checkpoint \\
+Accept age-six quote & Freshness and quantity & Freshness observer \\
+Ignore reservations & Pending exact cash & Cash-exposure observer \\
+Reject exact budget & Pending exact cash & Order-ID checkpoint \\
+Drop timeout retry & Retry with second order & Order-ID checkpoint \\
+Change retry ID & Retry with second order & Idempotence observer \\
+Ignore late fills & Late fill and duplicate & Ledger checkpoint \\
+Reapply duplicate fill & Late fill and duplicate, pending exact cash &
+  Ledger checkpoint, nonnegative-cash observer, respectively \\
+Apply full order quantity & Late fill and duplicate, pending exact cash &
+  Ledger checkpoint, nonnegative-cash observer, respectively \\
+\hline
+\end{tabular}
+\end{table}
+
+% Add to Section 4.6.
+\paragraph{Constructed interaction cases.}
+The two pairs were intentionally designed around selected combinations
+of quote age, price, quantity, and pending exposure. A local policy
+test exercising the corresponding inputs could identify the underlying
+policy deviations. The paired experiment establishes when the joint
+configuration violates the tested system-level requirements. The two
+cases provide evidence for those interactions in one simulator.
