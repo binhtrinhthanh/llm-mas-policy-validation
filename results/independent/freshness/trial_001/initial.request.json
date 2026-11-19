@@ -1,0 +1,11 @@
+{
+  "model": "gpt-4.1-mini-2025-04-14",
+  "input": [
+    {
+      "role": "user",
+      "content": "You are evolving one agent in a stock-trading MAS simulator.\nArchitecture: Market Data -> Analysis -> Portfolio -> Risk -> Execution -> Reconciliation.\nOther agents, exchange adapter, accounting observer and message runtime are fixed.\nOutput ONLY one function next_commands(event, order), no Markdown or explanation.\nUse only if/elif/else, return, local-name assignments, literals, dictionaries/lists/tuples,\nsubscripts, comparisons, boolean operators, + - *, and event.get/order.get.\nNo imports, loops, comprehensions, decorators, annotations, other function calls,\nrecursion, I/O, globals or mutation of input dictionaries. This is a constrained\npolicy extension task, not arbitrary agent synthesis. Returning [] for everything\nwill fail functional tests. Requirements below override baseline limitations.\n\nTask ID: freshness\nTarget agent: market\nRequirement: Forward quotes with age at most five ticks, reject older quotes, preserving ordinary fresh quote processing.\nInterface: event: kind=\"quote\",age(nonnegative int),price(int),qty(int). order: {}. Return [] to reject or [{\"type\":\"forward\"}] to forward unchanged.\nBASELINE:\ndef next_commands(event, order):\n    return [{\"type\": \"forward\"}]\n"
+    }
+  ],
+  "store": false,
+  "max_output_tokens": 3000
+}

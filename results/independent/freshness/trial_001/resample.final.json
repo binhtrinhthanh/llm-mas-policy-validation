@@ -1,0 +1,11 @@
+{
+  "passed": false,
+  "runs": 0,
+  "passed_runs": 0,
+  "failed_runs": 1,
+  "failures": [
+    {
+      "error": "ValueError: unsupported syntax: IsNot"
+    }
+  ]
+}
