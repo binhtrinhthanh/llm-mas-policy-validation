@@ -1,114 +1,158 @@
 # Scenario-Based Validation of LLM-Assisted Policy Updates in Multi-Agent Systems
 
-Research artifact for a **developer-assisted preliminary feasibility study**.
-This title is proposed manuscript metadata, not an accepted-publication claim.
+Research artifact accompanying the manuscript. It contains the stock-trading
+simulator, policy evaluator, archived candidates, and experimental results
+for individual and coordinated policy updates, interaction faults, and
+fault detection.
 
-## Recorded evidence
+## Results at a glance
 
-A conversational coding assistant authored six restricted Python policies in
-one session. Three configurations reuse those policies to update two, two and
-four agents together. The assistant previously developed and inspected the
-simulator, references and tests. This is **not an independent or blind LLM benchmark**.
+| Evaluation | Result |
+|---|---|
+| Archived assistant-authored updates | Six policies and three derived bundles completed 4,240 scenario executions with no observed violations. |
+| Paired interaction assessment | In each of two constructed Market Data–Risk cases, the frozen and both single-update configurations had 0/30 violating runs each. The joint-update configuration had 30/30 violating runs in each case. |
+| Post-freeze fault detection | On the same 1,080 mutant executions, the runtime observer detected 6/9 mutants and flagged 240 runs. With scenario checkpoints, detection increased to 9/9 mutants and 330 flagged runs. |
+| Independently sampled updates | 43/45 candidates passed the final suite, including 28/30 single-policy candidates and 15/15 coordinated bundles. |
 
-| Observation | Recorded result |
-|---|---:|
-| Authored policies / derived bundles | 6 / 3 |
-| Candidate development / final scenario executions | 1,220 / 3,020 |
-| Total candidate scenario executions | 4,240 |
-| Observed candidate failures | 0 |
-| Baseline + candidate scenario executions | 8,480 |
-| Independent LLM sampling trials | 0 |
-| Observed repair attempts | 0 |
+## System and validation
 
-These are scenario counts, not LLM trials. The bundles are not independent
-generations. The final suite was known to the generating assistant. Incomplete
-baselines deliberately lack requested capabilities; their rejection is not a
-comparative-effectiveness result. No API generation/repair experiment was run.
-No inference about repair success, unseen-task generalization or profitability
-is supported by this artifact.
-
-## System
-
-Market Data, Analysis, Portfolio, Risk, Execution and Reconciliation agents
-exchange messages through a FIFO queue in one process. The exchange and quotes
-are synthetic; buy-side only, with no fees, short selling or live trading.
-Tasks: retry, quote freshness, pending cash reservation, partial fills,
-notification deduplication and late-fill reconciliation. Three bundles combine
-Market Data + Execution, Risk + Execution and four agent policies.
+The Market Data, Analysis, Portfolio, Risk, Execution, and Reconciliation
+agents exchange messages through a FIFO queue in one process. The simulator
+uses synthetic quotes and a buy-side exchange model. The six individual
+tasks cover timeout retry, quote freshness, pending cash reservation,
+partial-fill accounting, notification deduplication, and late-fill
+reconciliation. The three coordinated tasks update Market Data and
+Execution, Risk and Execution, or four agent policies together.
 
 Candidate functions receive copied inputs and return structured commands.
-The tool uses AST restrictions, schema validation and scenario tests. It is
-**testing and validation, not formal verification**. Resource-limited workers
-are not an OS security sandbox for arbitrary Python.
+The evaluator checks the permitted Python constructs before integration,
+validates commands during execution, and checks the resulting behavior
+against invariants and scenario outcome checkpoints. Execution traces
+record messages and policy invocations for diagnosis. Resource-limited
+workers are designed to execute restricted policies in this study.
+Arbitrary Python requires a separate operating-system sandbox.
 
-## Reproduce
+## Reproduce the archived experiments
 
-Linux, Python 3.10+, standard library only. Recorded environment: Linux x86_64,
-Python 3.12.14. No API key, third-party package or GPU is required.
+Use Linux and Python 3.10 or later. The reported replay was checked with
+Python 3.12.14 on Linux x86_64. These commands use the standard library
+and require no API key.
 
 ```sh
 python run.py --out results/reproduced
 python verify_reproduction.py
+
+python run_integration.py
+diff -u results/integration/runs.csv results/integration_reproduced/runs.csv
+
+python compare_suites.py
+diff -u results/comparison/runs.csv results/comparison_reproduced/runs.csv
+
+python run_revision.py --out results/revision_reproduced
+diff -r results/revision results/revision_reproduced
 ```
 
-Candidate hashes are checked before execution. The script replays frozen code;
-it does not regenerate it. The verifier compares behavioral counts and outcomes,
-excluding timing. Archived evidence in `results/reported` remains unchanged.
+The replay checks frozen candidate hashes before execution. The original
+reproduction verifier compares behavioral counts and outcomes, excluding
+timing. GitHub Actions runs the commands above.
 
-## Contents
+### Archived assistant-authored updates
 
-- `candidates/`: six policies and three derived JSON bundles.
-- `prompts/`: task descriptions, not full independent generation contexts.
-- `tool_source/`: simulator, evaluator and future API-study scaffolding.
-- `results/reported/`: original CSV/JSON evidence and baseline failure traces.
-- `provenance.json`: generation context, evaluator awareness and excluded claims.
-- `frozen_candidates_sha256.json`: frozen candidate hashes.
-- `docs/RESULTS_VI.md`: Vietnamese results and limitations.
-- `docs/preliminary_evaluation.tex`: manuscript preliminary-evaluation text.
-- `MANIFEST_SHA256.json`: artifact checksums.
+A coding assistant authored six restricted Python policies with prior
+knowledge of the simulator, reference policies, and evaluator. Three
+coordinated configurations reuse those policies. The archived candidates
+completed 1,220 development and 3,020 final-suite scenario executions.
+Including the baseline configurations, this assessment comprised 8,480
+executions. The baselines deliberately omit the requested capabilities.
+Results and baseline failure traces are in `results/reported/`.
 
-The optional API-study scaffolding and its mock self-tests are not reported as
-real model-generation results. The replay commands above support the numbers.
+### Post-freeze assessment and paired interaction cases
 
-## Limitations
+The post-freeze suite assesses a frozen four-agent configuration and nine
+single-edit mutants on four scenario families, with 30 seeds per family.
+The original extended suite has 23 scenario families. A matched comparison
+using 30 seeds per family showed that both suites detected the same nine
+mutants with their full checks. See [integration assessment](docs/integration_assessment.md)
+and the records in `results/integration/` and `results/comparison/`.
 
-Small handcrafted policies and one simulator; overlapping tasks; three tasks
-share a reconciliation implementation; bundles reuse component policies. Seeds
-vary test inputs and selected schedules, not model samples. The exact backend
-model snapshot and isolated generation context are unavailable. Execution can
-be reproduced; identical regeneration has not been established. This provides
-feasibility evidence for these artifacts, not a safety theorem or production
-exchange guarantee. Retain these limitations when citing the results.
+The revision experiments compare frozen, single-update, and joint-update
+configurations under matched scenarios, seeds, and checks. They also
+measure the additional mutant detections provided by checkpoints on the
+same post-freeze executions. Per-run verdicts and witness traces are in
+`results/revision/`. See [revision experiments](docs/revision_experiments.md).
 
-## Post-freeze integration assessment
+## Independently sampled policy updates
 
-Run `python run_integration.py` to reproduce the supplemental assessment.
-The runner verifies the frozen artifact hashes, then evaluates the frozen
-four-agent configuration and nine single-edit policy variants against four
-new scenario families with 30 seeds each. Compare the generated
-`results/integration_reproduced/runs.csv` with
-`results/integration/runs.csv`. The archived results also include the first
-failure trace per variant and scenario family.
+Section 4.6 and Table 12 report five separate API requests for each of
+the six single-policy tasks and three coordinated-update tasks. The
+experiment used `gpt-4.1-mini-2025-04-14`. Each request supplied the task
+requirements, policy interfaces, permitted code constructs, and baseline
+code. The prompts omitted the evaluator, test scenarios, and assertions.
+Each request started without conversation history or evaluation feedback.
+Every candidate was evaluated without repair or selection, using 20
+seeds per scenario family.
 
-See [the integration assessment](docs/integration_assessment.md) for the
-protocol, results, limitations, and corrections for the manuscript.
+| Candidate type | Sampled | Rejected before execution | Passed the final suite |
+|---|---:|---:|---:|
+| Single-policy | 30 | 2 | 28 |
+| Coordinated bundles | 15 | 0 | 15 |
+| **Total** | **45** | **2** | **43** |
 
-### Comparison with the original extended suite
+The two rejected candidates used an unsupported `is not` operator in the
+quote-freshness task and a disallowed `min` call in the partial-fill task.
+Both were rejected during restricted-code checks. The 43 accepted
+candidates completed 5,900 development and 14,500 final-suite scenario
+executions with no observed behavioral violations.
 
-Run `python compare_suites.py` to reproduce the comparison using 30 seeds
-per family. Archived per-run and per-variant results are in
-`results/comparison/`. The original suite has 23 families and the post-freeze
-suite has four. Both detect all nine variants. See
-[the protocol and interpretation](docs/integration_assessment.md).
+The [archived independent results](results/independent/) include the
+configuration, prompts, responses, generated policies and bundles, and
+per-candidate evaluation reports. Use
+[`independent_samples.csv`](results/independent/independent_samples.csv)
+for the 45 candidate-level outcomes in Table 12. The lower-level
+`trials.csv` contains additional arm records from the common runner.
+At a request budget of one, these records reuse the initial candidate.
 
-## Future work
+The saved candidates can be evaluated again locally without API calls.
+To generate a **new** sample using the same experimental settings, install
+the `openai` Python package and configure `OPENAI_API_KEY`, then use a
+separate output directory:
 
-Independent model sampling and feedback-based repair remain planned experiments.
+```sh
+python -m pip install openai
+python run_independent.py \
+  --model gpt-4.1-mini-2025-04-14 \
+  --trials 5 --seeds 20 \
+  --out results/independent_new
+```
 
-## Revision experiments
+This command issues new API requests. The generated policies and pass
+counts may vary across samples.
 
-Run `python run_revision.py --out results/revision_reproduced` for the paired
-interaction experiments and post-freeze check attribution. Checked-in CSVs
-and trace witnesses are under `results/revision/`. See
-[revision experiments](docs/revision_experiments.md) for the design, results,
-interpretation and independent-sampling command.
+## Repository contents
+
+- `candidates/` contains the six archived policies and three derived bundles.
+- `prompts/` contains task descriptions.
+- `tool_source/` contains the simulator, evaluator, and API-study runner.
+- `results/reported/`, `results/integration/`, `results/comparison/`, and
+  `results/revision/` contain archived results and execution evidence.
+- `results/independent/` contains the 45 independently sampled candidates
+  and their evaluation records.
+- `provenance.json` records the context of the original assistant-authored
+  evaluation.
+- `frozen_candidates_sha256.json` records the frozen candidate hashes.
+- `MANIFEST_SHA256.json` records checksums for the original artifact files.
+- `docs/RESULTS_VI.md` summarizes the original results and limitations in
+  Vietnamese.
+
+## Scope and limitations
+
+The study evaluates small policy updates through fixed interfaces in one
+simulator. Several tasks share the reconciliation interface, and the two
+constructed interaction cases both involve the Market Data–Risk pair.
+A passing configuration indicates that the selected checks observed no
+violation on the tested executions. The sampling experiment covers one
+model snapshot, nine tasks, and five requests per task. Scenario seeds
+vary test inputs and schedules. Each API request supplies one candidate.
+
+Future work includes feedback-guided repair and evaluation across
+additional models, agent pairs, domains, and distributed settings.
