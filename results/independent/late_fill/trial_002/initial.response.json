@@ -1,0 +1,111 @@
+{
+  "id": "resp_0c8e97ce5baba94b016afe4c82d98887d095c2c04f93baa205",
+  "access_programs": null,
+  "created_at": 1795050626.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-4.1-mini-2025-04-14",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_0c8e97ce5baba94b016afe4c833cb087d0a98285bef3200f62",
+      "content": [
+        {
+          "annotations": [],
+          "text": "def next_commands(event, order):\n    if not event[\"seen\"]:\n        if order[\"status\"] == \"cancelled\" and event[\"qty\"] > 0 and event[\"qty\"] + order[\"filled\"] <= order[\"qty\"]:\n            return [{\"type\": \"apply_fill\", \"qty\": event[\"qty\"]}]\n        elif order[\"status\"] != \"cancelled\":\n            return [{\"type\": \"apply_fill\", \"qty\": event[\"qty\"]}]\n    return []",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": null
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 1.0,
+  "background": false,
+  "completed_at": 1795050628.0,
+  "conversation": null,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "input_transformations": [],
+  "max_output_tokens": 3000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_diagnostics": null,
+  "prompt_cache_key": null,
+  "prompt_cache_options": null,
+  "prompt_cache_retention": "in_memory",
+  "reasoning": {
+    "context": null,
+    "effort": null,
+    "generate_summary": null,
+    "mode": null,
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "cached_tokens": null,
+      "cached_tokens_details": null,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      }
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 320,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 97,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 417
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "_extracted_output_text": "def next_commands(event, order):\n    if not event[\"seen\"]:\n        if order[\"status\"] == \"cancelled\" and event[\"qty\"] > 0 and event[\"qty\"] + order[\"filled\"] <= order[\"qty\"]:\n            return [{\"type\": \"apply_fill\", \"qty\": event[\"qty\"]}]\n        elif order[\"status\"] != \"cancelled\":\n            return [{\"type\": \"apply_fill\", \"qty\": event[\"qty\"]}]\n    return []"
+}

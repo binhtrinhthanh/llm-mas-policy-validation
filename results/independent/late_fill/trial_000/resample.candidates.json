@@ -1,0 +1,10 @@
+[
+  {
+    "response_id": "resp_070a06428160bbd8016afe4c7e2bac87d08280eb0ff0063f00",
+    "returned_model": "gpt-4.1-mini-2025-04-14",
+    "input_tokens": 320,
+    "output_tokens": 93,
+    "seconds": 1.6446358090001922,
+    "source_sha256": "ea61346ffe222659adf90a425ae9022f816c2a0d809a04cda475e3d753ad2438"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "model": "gpt-4.1-mini-2025-04-14",
+  "input": [
+    {
+      "role": "user",
+      "content": "You are evolving one agent in a stock-trading MAS simulator.\nArchitecture: Market Data -> Analysis -> Portfolio -> Risk -> Execution -> Reconciliation.\nOther agents, exchange adapter, accounting observer and message runtime are fixed.\nOutput ONLY one function next_commands(event, order), no Markdown or explanation.\nUse only if/elif/else, return, local-name assignments, literals, dictionaries/lists/tuples,\nsubscripts, comparisons, boolean operators, + - *, and event.get/order.get.\nNo imports, loops, comprehensions, decorators, annotations, other function calls,\nrecursion, I/O, globals or mutation of input dictionaries. This is a constrained\npolicy extension task, not arbitrary agent synthesis. Returning [] for everything\nwill fail functional tests. Requirements below override baseline limitations.\n\nTask ID: late_fill\nTarget agent: reconciliation\nRequirement: Reconcile valid exchange fills delivered after a local cancel request, because the exchange may have executed before cancellation. Preserve deduplication and partial-fill accounting. This is not a complete exchange cancellation protocol.\nInterface: event: kind=\"fill\",qty(positive int),price(int),seen(bool). order: qty(int total),filled(int already accounted),status(str). Return [] or [{\"type\":\"apply_fill\",\"qty\":int}]. Trusted runtime updates its seen set after policy execution.\nBASELINE:\ndef next_commands(event, order):\n    if not event[\"seen\"] and order[\"status\"] != \"cancelled\":\n        return [{\"type\": \"apply_fill\", \"qty\": event[\"qty\"]}]\n    return []\n"
+    }
+  ],
+  "store": false,
+  "max_output_tokens": 3000
+}
