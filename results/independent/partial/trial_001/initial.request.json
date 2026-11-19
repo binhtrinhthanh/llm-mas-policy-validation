@@ -1,0 +1,11 @@
+{
+  "model": "gpt-4.1-mini-2025-04-14",
+  "input": [
+    {
+      "role": "user",
+      "content": "You are evolving one agent in a stock-trading MAS simulator.\nArchitecture: Market Data -> Analysis -> Portfolio -> Risk -> Execution -> Reconciliation.\nOther agents, exchange adapter, accounting observer and message runtime are fixed.\nOutput ONLY one function next_commands(event, order), no Markdown or explanation.\nUse only if/elif/else, return, local-name assignments, literals, dictionaries/lists/tuples,\nsubscripts, comparisons, boolean operators, + - *, and event.get/order.get.\nNo imports, loops, comprehensions, decorators, annotations, other function calls,\nrecursion, I/O, globals or mutation of input dictionaries. This is a constrained\npolicy extension task, not arbitrary agent synthesis. Returning [] for everything\nwill fail functional tests. Requirements below override baseline limitations.\n\nTask ID: partial\nTarget agent: reconciliation\nRequirement: Support partial fills: apply only the quantity executed in this notification. Preserve execution-id deduplication and reconcile valid late notifications after cancellation.\nInterface: event: kind=\"fill\",qty(positive int),price(int),seen(bool). order: qty(int total order size),filled(int already accounted),status(str). Return [] or [{\"type\":\"apply_fill\",\"qty\":int}]. Runtime marks the notification seen after policy execution and applies price from the actual fill.\nBASELINE:\ndef next_commands(event, order):\n    if not event[\"seen\"]:\n        return [{\"type\": \"apply_fill\", \"qty\": order[\"qty\"]}]\n    return []\n"
+    }
+  ],
+  "store": false,
+  "max_output_tokens": 3000
+}
