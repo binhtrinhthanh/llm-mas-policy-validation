@@ -1,0 +1,4 @@
+{
+  "freshness": "def next_commands(event, order):\n    if event.get(\"kind\") == \"quote\":\n        age = event.get(\"age\", 0)\n        if age <= 5:\n            return [{\"type\": \"forward\"}]\n        else:\n            return []\n    else:\n        return []\n",
+  "retry": "def next_commands(event, order):\n    kind = event.get(\"kind\")\n    approved = order.get(\"approved\", False)\n    status = order.get(\"status\", \"\")\n    if not approved or status in (\"cancelled\", \"filled\"):\n        return []\n    if kind == \"submit\" and status == \"approved\":\n        return [{\"type\": \"submit\", \"client_order_id\": order.get(\"order_id\"), \"price\": order.get(\"price\"), \"qty\": order.get(\"qty\")}]\n    elif kind == \"timeout\" and status == \"approved\":\n        return [{\"type\": \"submit\", \"client_order_id\": order.get(\"order_id\"), \"price\": order.get(\"price\"), \"qty\": order.get(\"qty\")}]\n    else:\n        return []\n"
+}
