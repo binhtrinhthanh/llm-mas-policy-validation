@@ -1,0 +1,11 @@
+{
+  "model": "gpt-4.1-mini-2025-04-14",
+  "input": [
+    {
+      "role": "user",
+      "content": "You are evolving one agent in a stock-trading MAS simulator.\nArchitecture: Market Data -> Analysis -> Portfolio -> Risk -> Execution -> Reconciliation.\nOther agents, exchange adapter, accounting observer and message runtime are fixed.\nOutput ONLY one function next_commands(event, order), no Markdown or explanation.\nUse only if/elif/else, return, local-name assignments, literals, dictionaries/lists/tuples,\nsubscripts, comparisons, boolean operators, + - *, and event.get/order.get.\nNo imports, loops, comprehensions, decorators, annotations, other function calls,\nrecursion, I/O, globals or mutation of input dictionaries. This is a constrained\npolicy extension task, not arbitrary agent synthesis. Returning [] for everything\nwill fail functional tests. Requirements below override baseline limitations.\n\nTask ID: reservation\nTarget agent: risk\nRequirement: Approve only if price*qty does not exceed current cash minus funds reserved for approved unfilled orders. Preserve the maximum quantity of ten. Equal available cash is allowed.\nInterface: event: kind=\"assess\",cash(int),reserved(int). order: price(int),qty(positive int). Return [] to reject or [{\"type\":\"approve\"}]. Reservations are computed and applied by the trusted runtime.\nBASELINE:\ndef next_commands(event, order):\n    if order[\"price\"] * order[\"qty\"] <= event[\"cash\"] and order[\"qty\"] <= 10:\n        return [{\"type\": \"approve\"}]\n    return []\n"
+    }
+  ],
+  "store": false,
+  "max_output_tokens": 3000
+}
