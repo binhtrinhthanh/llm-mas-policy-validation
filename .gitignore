@@ -1,16 +1,15 @@
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
+
 .env
 .env.*
 *.pem
 *.key
-results/reproduced/
 *.zip
 
+results/reproduced/
 results/integration_reproduced/
-
 results/comparison_reproduced/
-
 results/revision_reproduced/
-results/independent/
+results/independent_pilot/
