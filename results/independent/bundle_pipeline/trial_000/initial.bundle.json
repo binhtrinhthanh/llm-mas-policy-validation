@@ -1,0 +1,6 @@
+{
+  "freshness": "def next_commands(event, order):\n    if event[\"kind\"] == \"quote\" and event.get(\"age\", 0) <= 5:\n        return [{\"type\": \"forward\"}]\n    return []\n",
+  "reservation": "def next_commands(event, order):\n    max_qty = 10\n    cost = order[\"price\"] * order[\"qty\"]\n    available_cash = event[\"cash\"] - event[\"reserved\"]\n    if cost <= available_cash and order[\"qty\"] <= max_qty and order[\"qty\"] > 0:\n        return [{\"type\": \"approve\"}]\n    return []\n",
+  "retry": "def next_commands(event, order):\n    if not order.get(\"approved\", False) or order.get(\"status\") in (\"cancelled\", \"filled\"):\n        return []\n    if event[\"kind\"] == \"submit\" and order[\"status\"] == \"approved\":\n        return [{\"type\": \"submit\", \"client_order_id\": order[\"order_id\"], \"price\": order[\"price\"], \"qty\": order[\"qty\"]}]\n    if event[\"kind\"] == \"timeout\":\n        return [{\"type\": \"submit\", \"client_order_id\": order[\"order_id\"], \"price\": order[\"price\"], \"qty\": order[\"qty\"]}]\n    return []\n",
+  "partial": "def next_commands(event, order):\n    if event[\"kind\"] == \"fill\" and not event[\"seen\"]:\n        fill_qty = event[\"qty\"]\n        if fill_qty > 0:\n            return [{\"type\": \"apply_fill\", \"qty\": fill_qty}]\n    return []\n"
+}

@@ -1,0 +1,31 @@
+{
+  "version": "0.4",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "tasks": [
+    "retry",
+    "freshness",
+    "reservation",
+    "partial",
+    "dedup",
+    "late_fill",
+    "bundle_market_retry",
+    "bundle_risk_retry",
+    "bundle_pipeline"
+  ],
+  "trials": 5,
+  "budget": 1,
+  "seeds": 20,
+  "max_output_tokens": 3000,
+  "mode": "openai_api",
+  "source_hashes": {
+    "system.py": "ee157b4dc106c215850af079a56d50ea5389059dd4003e0e60c6babf018057a7",
+    "policy_runtime.py": "4f3d7f7d44656a3aeb8fdbcb070cede35f30da0fe304ca42f7a35f5be20f4561",
+    "catalog.py": "5aa5a92e4ee85cb421bd3846f6e14ee516556a57524848f8e733555996970ce0",
+    "evaluator.py": "c816235606aa5b29c29dd0c4ce0eb4b2757f83667e15c0704098be7ff8d0f65e",
+    "study.py": "b1f4539bd550c30640fd80a3f4c3fc9e717b305e7d3629150ba6a96ba69559b5",
+    "analysis.py": "bf89c5664d634a083d310219e9fe410577e6fbdb9fdef75e4f3233b5588a10a5"
+  },
+  "selection": "highest development pass fraction; earliest wins ties",
+  "candidate_formats": "Single tasks: Python; bundle tasks: JSON mapping policy keys to Python source",
+  "arms": "shared initial, independent resampling, feedback repair; fixed call budgets"
+}

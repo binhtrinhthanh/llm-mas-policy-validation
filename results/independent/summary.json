@@ -1,0 +1,28 @@
+{
+  "mode": "openai_api",
+  "expected_unique_requests": 45,
+  "completed_unique_requests": 45,
+  "new_api_requests": 45,
+  "new_mock_requests": 0,
+  "cached_requests": 0,
+  "task_trial_pairs": 45,
+  "arm_results": 135,
+  "source_hashes": {
+    "system.py": "ee157b4dc106c215850af079a56d50ea5389059dd4003e0e60c6babf018057a7",
+    "policy_runtime.py": "4f3d7f7d44656a3aeb8fdbcb070cede35f30da0fe304ca42f7a35f5be20f4561",
+    "catalog.py": "5aa5a92e4ee85cb421bd3846f6e14ee516556a57524848f8e733555996970ce0",
+    "evaluator.py": "c816235606aa5b29c29dd0c4ce0eb4b2757f83667e15c0704098be7ff8d0f65e",
+    "study.py": "b1f4539bd550c30640fd80a3f4c3fc9e717b305e7d3629150ba6a96ba69559b5",
+    "analysis.py": "bf89c5664d634a083d310219e9fe410577e6fbdb9fdef75e4f3233b5588a10a5"
+  },
+  "limitations": [
+    "Six single-policy tasks plus three simultaneous multi-policy bundles; not arbitrary agent synthesis.",
+    "Matched calls/output caps; feedback prompts may use more input tokens.",
+    "Deterministic FIFO simulator; selected final scenarios and numeric inputs vary.",
+    "Final suites excluded from prompts but visible to notebook owner.",
+    "One simulator/domain; no exhaustive verification or profitability claims."
+  ],
+  "unique_request_input_tokens": 18480,
+  "unique_request_output_tokens": 7183,
+  "unique_response_files": 45
+}

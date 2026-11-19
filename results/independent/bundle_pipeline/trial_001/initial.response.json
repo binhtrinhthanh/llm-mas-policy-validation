@@ -1,0 +1,111 @@
+{
+  "id": "resp_033ca8c68eaa3162016afe4cb1eefc87d0ae644d1e73c1d44c",
+  "access_programs": null,
+  "created_at": 1795050673.0,
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "model": "gpt-4.1-mini-2025-04-14",
+  "object": "response",
+  "output": [
+    {
+      "id": "msg_033ca8c68eaa3162016afe4cb28e0887d0a5c4644eb3cbc4fb",
+      "content": [
+        {
+          "annotations": [],
+          "text": "{\n  \"freshness\": \"def next_commands(event, order):\\n    if event.get(\\\"kind\\\") == \\\"quote\\\" and event.get(\\\"age\\\", 0) <= 5:\\n        return [{\\\"type\\\": \\\"forward\\\"}]\\n    else:\\n        return []\\n\",\n  \"reservation\": \"def next_commands(event, order):\\n    if order[\\\"qty\\\"] > 10:\\n        return []\\n    max_available = event[\\\"cash\\\"] - event[\\\"reserved\\\"]\\n    if order[\\\"price\\\"] * order[\\\"qty\\\"] <= max_available:\\n        return [{\\\"type\\\": \\\"approve\\\"}]\\n    else:\\n        return []\\n\",\n  \"retry\": \"def next_commands(event, order):\\n    if not order.get(\\\"approved\\\", False):\\n        return []\\n    if order.get(\\\"status\\\") in [\\\"cancelled\\\", \\\"filled\\\"]:\\n        return []\\n    if event.get(\\\"kind\\\") in [\\\"submit\\\", \\\"timeout\\\"]:\\n        return [{\\\"type\\\": \\\"submit\\\", \\\"client_order_id\\\": order[\\\"order_id\\\"], \\\"price\\\": order[\\\"price\\\"], \\\"qty\\\": order[\\\"qty\\\"]}]\\n    return []\\n\",\n  \"partial\": \"def next_commands(event, order):\\n    if event.get(\\\"kind\\\") == \\\"fill\\\" and not event.get(\\\"seen\\\", False):\\n        executed_qty = event[\\\"qty\\\"]\\n        if executed_qty > 0:\\n            return [{\\\"type\\\": \\\"apply_fill\\\", \\\"qty\\\": executed_qty}]\\n    return []\\n\"\n}",
+          "type": "output_text",
+          "logprobs": []
+        }
+      ],
+      "role": "assistant",
+      "status": "completed",
+      "type": "message",
+      "phase": null
+    }
+  ],
+  "parallel_tool_calls": true,
+  "temperature": 1.0,
+  "tool_choice": "auto",
+  "tools": [],
+  "top_p": 1.0,
+  "background": false,
+  "completed_at": 1795050677.0,
+  "conversation": null,
+  "image": {
+    "context_compression": "disabled"
+  },
+  "input_transformations": [],
+  "max_output_tokens": 3000,
+  "max_tool_calls": null,
+  "moderation": null,
+  "previous_response_id": null,
+  "prompt": null,
+  "prompt_cache_diagnostics": null,
+  "prompt_cache_key": null,
+  "prompt_cache_options": null,
+  "prompt_cache_retention": "in_memory",
+  "reasoning": {
+    "context": null,
+    "effort": null,
+    "generate_summary": null,
+    "mode": null,
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "text": {
+    "format": {
+      "type": "text"
+    },
+    "verbosity": "medium"
+  },
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "cached_tokens": null,
+      "cached_tokens_details": null,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      }
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "top_logprobs": 0,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 817,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens_details": {
+        "ttl_12h_tokens": 0,
+        "ttl_30m_tokens": 0
+      }
+    },
+    "output_tokens": 351,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1168
+  },
+  "user": null,
+  "billing": {
+    "payer": "developer"
+  },
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0,
+  "store": false,
+  "_extracted_output_text": "{\n  \"freshness\": \"def next_commands(event, order):\\n    if event.get(\\\"kind\\\") == \\\"quote\\\" and event.get(\\\"age\\\", 0) <= 5:\\n        return [{\\\"type\\\": \\\"forward\\\"}]\\n    else:\\n        return []\\n\",\n  \"reservation\": \"def next_commands(event, order):\\n    if order[\\\"qty\\\"] > 10:\\n        return []\\n    max_available = event[\\\"cash\\\"] - event[\\\"reserved\\\"]\\n    if order[\\\"price\\\"] * order[\\\"qty\\\"] <= max_available:\\n        return [{\\\"type\\\": \\\"approve\\\"}]\\n    else:\\n        return []\\n\",\n  \"retry\": \"def next_commands(event, order):\\n    if not order.get(\\\"approved\\\", False):\\n        return []\\n    if order.get(\\\"status\\\") in [\\\"cancelled\\\", \\\"filled\\\"]:\\n        return []\\n    if event.get(\\\"kind\\\") in [\\\"submit\\\", \\\"timeout\\\"]:\\n        return [{\\\"type\\\": \\\"submit\\\", \\\"client_order_id\\\": order[\\\"order_id\\\"], \\\"price\\\": order[\\\"price\\\"], \\\"qty\\\": order[\\\"qty\\\"]}]\\n    return []\\n\",\n  \"partial\": \"def next_commands(event, order):\\n    if event.get(\\\"kind\\\") == \\\"fill\\\" and not event.get(\\\"seen\\\", False):\\n        executed_qty = event[\\\"qty\\\"]\\n        if executed_qty > 0:\\n            return [{\\\"type\\\": \\\"apply_fill\\\", \\\"qty\\\": executed_qty}]\\n    return []\\n\"\n}"
+}
