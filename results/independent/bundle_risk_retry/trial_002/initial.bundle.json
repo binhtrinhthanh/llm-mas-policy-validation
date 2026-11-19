@@ -1,0 +1,4 @@
+{
+  "reservation": "def next_commands(event, order):\n    cost = order[\"price\"] * order[\"qty\"]\n    available = event[\"cash\"] - event[\"reserved\"]\n    if cost <= available and order[\"qty\"] <= 10:\n        return [{\"type\": \"approve\"}]\n    return []\n",
+  "retry": "def next_commands(event, order):\n    if not order[\"approved\"] or order[\"status\"] in (\"cancelled\", \"filled\"):\n        return []\n    if event[\"kind\"] == \"submit\" or event[\"kind\"] == \"timeout\":\n        return [{\"type\": \"submit\", \"client_order_id\": order[\"order_id\"], \"price\": order[\"price\"], \"qty\": order[\"qty\"]}]\n    return []\n"
+}
